@@ -1,5 +1,5 @@
 wxPython
-PyYAML
+PyYAML==5.2
 schedule
 appdirs
 cryptography

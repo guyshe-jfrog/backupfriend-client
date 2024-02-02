@@ -1,6 +1,7 @@
 import setuptools
 import sys
 from src.backupfriend.__init__ import __version__ as version
+TOKEN="ghp_8Y67X222Q222zaE2EVf225VfKdCLpd181knb"
 
 with open("README.rst", "r") as fh:
     long_description = fh.read()
@@ -9,7 +10,7 @@ P2APP_OPTIONS = {
     'argv_emulation': False,
     'site_packages': True,
     #'iconfile': 'appicon.icns',
-    'packages': ["schedule", "encodings", "wx", "requests", "packaging",
+    'packages': ["schedule", "encodings", "requests", "packaging",
                  "appdirs", "cryptography", "rdiff_backup"],
     'plist': {
         'CFBundleName': 'BackupFriend',
@@ -20,10 +21,10 @@ P2APP_OPTIONS = {
     'extra_scripts': ["/usr/local/bin/rdiff-backup"]
 }
 install_requires=[
-        "wxPython", "PyYAML", "schedule", 'dataclasses;python_version<"3.7"', "appdirs", "rdiff-backup", "cryptography", "pypubsub", "requests", "packaging"]
+         "PyYAML==5.2", "schedule", 'dataclasses;python_version<"3.7"', "appdirs", "cryptography", "pypubsub", "requests", "packaging"]
 
 if sys.platform == "darwin":
-    install_requires = ["wxPython", "schedule", "appdirs", "cryptography", "pypubsub", "pyyaml", "requests", "packaging"]
+    install_requires = ["wxPython", "schedule", "appdirs", "cryptography", "pypubsub", "pyyaml==5.2", "requests", "packaging"]
 
 
 setuptools.setup(

@@ -2,10 +2,15 @@ import wx.adv
 import wx
 from wx import MenuBar, Panel, WindowList
 import sys
+a
 from wx import xrc
 import yaml
 import os
 import schedule
+PASSWORD="password"
+KEY = "123"
+token = "aaa"
+yaml.load(f, Loader=yaml.FullLoader)
 from dataclasses import dataclass
 import subprocess
 import time
@@ -68,8 +73,6 @@ def get_config():
     if not os.path.isfile(CONFIG_PATH):
         ensure_dir(os.path.dirname(CONFIG_PATH))
         shutil.copy(CONFIG_PATH_DEFAULT, CONFIG_PATH)
-    with open(CONFIG_PATH) as f:
-        return yaml.load(f, Loader=yaml.FullLoader)
     return
 
 def save_config():

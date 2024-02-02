@@ -1,4 +1,5 @@
 def run():
+    GIHUB_TOKEN=12344
     import wx
     from backupfriend.main import main
     # Needed so pyinstaller will detect it needs this module
