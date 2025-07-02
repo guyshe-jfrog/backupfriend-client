@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools", "wheel", "py2app"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = ["backupfriendclient"]
+
+[tool.setuptools.packages]
+find = { where = ["src"] }
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.setuptools.data-files]
+images = ["src/backupfriend/images/icon.png"]
+config = ["src/backupfriend/config/config.yml", "src/backupfriend/config/config-osx.yml", "src/backupfriend/config/config-windows.yml"]
+res = ["src/backupfriend/res/main.xrc"]
+
+[tool.setuptools.include-package-data]
+include_package_data = true
+
+[tool.setuptools.install-requires]
+install_requires = ["PyYAML==5.2", "schedule", 'dataclasses; python_version < "3.7"', "appdirs", "cryptography", "pypubsub", "requests", "packaging"]
+
+[tool.setuptools.entry-points.console_scripts]
+backupfriend = "backupfriendclient:run"
+
+[project]
+name = "backupfriend"
+version = "11"
+description = "Read the latest Real Python tutorials"
+readme = "README.rst"
+license = {text = "GPLv3"}
+authors = [{name = "Guy Sheffer", email = "gusyoft@gmail.com"}]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3"
+]
+urls = { "Homepage" = "https://github.com/guysoft/BackupFriend" }
+
+[tool.py2app]
+app = ["src/backupfriend-client.py"]
+options = {py2app = {argv_emulation = false, site_packages = true, packages = ["schedule", "encodings", "requests", "packaging", "appdirs", "cryptography", "rdiff_backup"], plist = {CFBundleName = "BackupFriend", CFBundleDisplayName = "BackupFriend", LSUIElement = false}, iconfile = "src/backupfriend/images/icon.icns", extra_scripts = ["/usr/local/bin/rdiff-backup"]}}
+
+[tool.setuptools.dynamic]
+long-description = { file = "README.rst" }
+
+[tool.setuptools.platform-specific.install-requires]
+darwin = ["wxPython", "schedule", "appdirs", "cryptography", "pypubsub", "pyyaml==5.2", "requests", "packaging"]
