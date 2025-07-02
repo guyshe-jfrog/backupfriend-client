@@ -1,50 +1,73 @@
+# pyproject.toml
+
 [build-system]
-requires = ["setuptools", "wheel", "py2app"]
+requires = ["setuptools>=61.0.0", "wheel", "py2app"] # py2app is needed for setup_requires, as per original setup.py
 build-backend = "setuptools.build_meta"
-
-[tool.setuptools]
-py-modules = ["backupfriendclient"]
-
-[tool.setuptools.packages]
-find = { where = ["src"] }
-
-[tool.setuptools.package-dir]
-"" = "src"
-
-[tool.setuptools.data-files]
-images = ["src/backupfriend/images/icon.png"]
-config = ["src/backupfriend/config/config.yml", "src/backupfriend/config/config-osx.yml", "src/backupfriend/config/config-windows.yml"]
-res = ["src/backupfriend/res/main.xrc"]
-
-[tool.setuptools.include-package-data]
-include_package_data = true
-
-[tool.setuptools.install-requires]
-install_requires = ["PyYAML==5.2", "schedule", 'dataclasses; python_version < "3.7"', "appdirs", "cryptography", "pypubsub", "requests", "packaging"]
-
-[tool.setuptools.entry-points.console_scripts]
-backupfriend = "backupfriendclient:run"
 
 [project]
 name = "backupfriend"
-version = "11"
+version = "11" # Extracted from `version = "11"`
 description = "Read the latest Real Python tutorials"
-readme = "README.rst"
-license = {text = "GPLv3"}
-authors = [{name = "Guy Sheffer", email = "gusyoft@gmail.com"}]
-classifiers = [
-    "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python",
-    "Programming Language :: Python :: 3"
+readme = { file = "README.rst", content-type = "text/x-rst" } # Maps long_description and long_description_content_type
+authors = [
+    { name = "Guy Sheffer", email = "gusyoft@gmail.com" },
 ]
-urls = { "Homepage" = "https://github.com/guysoft/BackupFriend" }
+license = { text = "GPLv3" } # As per license="GPLv3"
+urls = { Homepage = "https://github.com/guysoft/BackupFriend" } # Maps url
+classifiers = [
+    "License :: OSI Approved :: GNU General Public License v3 or later", # Updated to match GPLv3 license field
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
 
-[tool.py2app]
-app = ["src/backupfriend-client.py"]
-options = {py2app = {argv_emulation = false, site_packages = true, packages = ["schedule", "encodings", "requests", "packaging", "appdirs", "cryptography", "rdiff_backup"], plist = {CFBundleName = "BackupFriend", CFBundleDisplayName = "BackupFriend", LSUIElement = false}, iconfile = "src/backupfriend/images/icon.icns", extra_scripts = ["/usr/local/bin/rdiff-backup"]}}
+dependencies = [
+    "PyYAML==5.2",
+    "schedule",
+    "appdirs",
+    "cryptography",
+    "pypubsub",
+    "requests",
+    "packaging",
+    'dataclasses; python_version < "3.7"', # Conditional dependency
+    'wxPython; sys_platform == "darwin"', # Conditional dependency for macOS
+]
 
-[tool.setuptools.dynamic]
-long-description = { file = "README.rst" }
+[project.scripts]
+backupfriend = "backupfriendclient:run" # Maps entry_points console_scripts
 
-[tool.setuptools.platform-specific.install-requires]
-darwin = ["wxPython", "schedule", "appdirs", "cryptography", "pypubsub", "pyyaml==5.2", "requests", "packaging"]
+[tool.setuptools]
+# Specifies that packages are found under the 'src' directory
+package-dir = {"" = "src"}
+# Automatically finds packages within the 'src' directory, e.g., 'src/backupfriend' becomes 'backupfriend'
+packages = ["backupfriend"]
+# Specifies standalone Python modules (files not part of a package), e.g., 'src/backupfriendclient.py'
+py-modules = ["backupfriendclient"]
+# Include non-code files found by 'package_data'
+include-package-data = true
+
+[tool.setuptools.package-data]
+# Maps data_files into package_data for the 'backupfriend' package
+# Paths are relative to the package root (which is 'src/backupfriend' due to package-dir and packages)
+"backupfriend" = [
+    "images/icon.png",
+    "config/*.yml", # Wildcard for config files
+    "res/main.xrc",
+]
+
+# --- py2app specific configuration (Illustrative - check py2app documentation) ---
+# py2app typically requires its configuration in setup.py or via command-line arguments.
+# As of current versions (e.g., py2app 0.28), it does not directly read these options
+# from a [tool.py2app] section in pyproject.toml.
+# If py2app were to support it in the future, it might look something like this:
+#
+# [tool.py2app]
+# app = ["src/backupfriend-client.py"]
+# argv_emulation = false
+# site_packages = true
+# packages = [
+#     "schedule", "encodings", "requests", "packaging",
+#     "appdirs", "cryptography", "rdiff_backup"
+# ]
+# plist = { CFBundleName = "BackupFriend", CFBundleDisplayName = "BackupFriend", LSUIElement = false }
+# iconfile = "src/backupfriend/images/icon.icns"
+# extra_scripts = ["/usr/local/bin/rdiff-backup"]
